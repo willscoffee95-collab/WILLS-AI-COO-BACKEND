@@ -187,12 +187,12 @@ async function sendQuestion(raw){
 function appendMessage(m,scroll=true){
   const box=$('#chatMessages'),el=document.createElement('div');
   if(m.role==='user'){el.className='message user';el.innerHTML=`<div class="message-body">${esc(m.text)}</div>`}
-  else if(m.role==='thinking'){el.className='message assistant';el.dataset.id='thinking';el.innerHTML=`<div class="assistant-avatar"><img src="icons/icon-192.png" alt="Wills Intelligence"></div><div class="message-body"><div class="thinking"><i></i><i></i><i></i></div></div>`}
+  else if(m.role==='thinking'){el.className='message assistant';el.dataset.id='thinking';el.innerHTML=`<div class="assistant-avatar"><img src="./icons/icon-192.png" alt="Wills Intelligence"></div><div class="message-body"><div class="thinking"><i></i><i></i><i></i></div></div>`}
   else{
     el.className='message assistant';
     const ev=(m.evidence||[]).length?`<ul>${m.evidence.map(x=>`<li>${esc(plainText(x))}</li>`).join('')}</ul>`:'';
     const next=m.nextStep?`<div class="next-step"><b>Kalau mau ditindaklanjuti:</b> ${esc(plainText(m.nextStep))}</div>`:'';
-    el.innerHTML=`<div class="assistant-avatar"><img src="icons/icon-192.png" alt="Wills Intelligence"></div><div class="message-body"><div class="assistant-summary">${esc(plainText(m.summary||''))}</div>${ev}${next}<span class="confidence">Keyakinan data: ${esc(friendlyConfidence(m.confidence||'MEDIUM'))}</span></div>`
+    el.innerHTML=`<div class="assistant-avatar"><img src="./icons/icon-192.png" alt="Wills Intelligence"></div><div class="message-body"><div class="assistant-summary">${esc(plainText(m.summary||''))}</div>${ev}${next}<span class="confidence">Keyakinan data: ${esc(friendlyConfidence(m.confidence||'MEDIUM'))}</span></div>`
   }
   box.appendChild(el);if(scroll)scrollChat()
 }
@@ -258,24 +258,10 @@ function captureViewScroll(v){
 function restoreViewScroll(v){setTimeout(()=>{if(v==='chat'){const x=$('#chatScroller');if(x&&state.scrollPositions.chat>0)x.scrollTop=state.scrollPositions.chat;return}const p=$('#panelView');if(p)p.scrollTop=state.scrollPositions.panels[v]||0},30)}
 function dismissKeyboard(){const a=document.activeElement;if(a&&/INPUT|TEXTAREA/.test(a.tagName))a.blur()}
 function installMobileGuards(){
-  document.documentElement.style.overscrollBehavior='none';document.body.style.overscrollBehavior='none';
-  let startY=0,scroller=null;
-  document.addEventListener('touchstart',e=>{if(!e.touches?.length)return;startY=e.touches[0].clientY;scroller=findVerticalScroller(e.target)},{passive:true});
-  document.addEventListener('touchmove',e=>{
-    if(!e.touches?.length)return;
-    if(!scroller){e.preventDefault();return}
-    const dy=e.touches[0].clientY-startY,top=scroller.scrollTop<=0,bottom=scroller.scrollTop+scroller.clientHeight>=scroller.scrollHeight-1;
-    if((top&&dy>0)||(bottom&&dy<0))e.preventDefault();
-  },{passive:false});
-}
-function findVerticalScroller(el){
-  let n=el;
-  while(n&&n!==document.body){
-    const cs=getComputedStyle(n),oy=cs.overflowY;
-    if((oy==='auto'||oy==='scroll')&&n.scrollHeight>n.clientHeight+2)return n;
-    n=n.parentElement;
-  }
-  return null;
+  // Native mobile behavior: normal vertical scrolling, no document pull-to-refresh.
+  // Do NOT prevent touchmove globally because it can lock nested scroll containers.
+  document.documentElement.style.overscrollBehaviorY='none';
+  document.body.style.overscrollBehaviorY='none';
 }
 function scrollDrawerBottom(){const d=$('#drawer');d.scrollTop=d.scrollHeight}
 function logout(){persistActive();clearSession();closeDrawerDirect();state.historyReady=false;state.pendingViewFromDrawer='';$('#pin').value='';history.replaceState(null,'',appBaseUrl());showLogin();toast('Kamu sudah keluar dari WILL')}

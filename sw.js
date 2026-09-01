@@ -1,7 +1,7 @@
-const CACHE='wills-ai-coo-v0.4.1-mobile-behavior';
+const CACHE='wills-ai-coo-v0.4.2-logo-scroll-fix';
 const SHELL=[
   './','./index.html','./styles.css?v=0.4.1','./app.js?v=0.4.1','./manifest.json',
-  './assets/wills-intelligence.png','./assets/wills-brand.png',
+  './wills-intelligence-v042.png','./assets/wills-brand.png',
   './icons/icon-192.png','./icons/icon-512.png','./icons/icon-1024.png'
 ];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting())));
