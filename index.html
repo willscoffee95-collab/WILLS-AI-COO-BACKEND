@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
-  <meta name="theme-color" content="#d91520" />
+  <meta name="theme-color" content="#e3131b" />
   <meta name="color-scheme" content="light" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -13,106 +13,104 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="icon" href="icons/icon-192.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=0.3.0" />
 </head>
 <body>
   <div id="toast" class="toast" aria-live="polite"></div>
 
-  <section id="splashView" class="splash-view">
-    <div class="splash-glow"></div>
-    <img src="assets/wills-brand.png" class="splash-logo" alt="Wills" />
-    <div class="splash-copy">
-      <strong>WILL</strong>
-      <span>Wills Intelligence</span>
-      <small>Business Control Tower</small>
-    </div>
-    <div class="splash-loader"><i></i></div>
+  <section id="splash" class="splash">
+    <div class="splash-halo"></div>
+    <img src="assets/wills-brand.png" alt="Wills Coffee" />
+    <strong>WILL</strong>
+    <span>Wills Intelligence</span>
   </section>
 
-  <section id="loginView" class="login-shell hidden">
-    <div class="login-ambient login-ambient-a"></div>
-    <div class="login-ambient login-ambient-b"></div>
-    <div class="login-wrap">
-      <div class="brand-lockup">
-        <img src="assets/wills-brand.png" class="brand-logo" alt="Wills Coffee" />
-        <div>
-          <p class="brand-kicker">WILLS INTELLIGENCE</p>
-          <h1>WILL</h1>
-          <p class="brand-sub">AI Business Control Tower</p>
-        </div>
+  <section id="loginView" class="auth-screen hidden">
+    <div class="auth-wrap">
+      <img src="assets/wills-brand.png" class="auth-logo" alt="Wills Coffee" />
+      <div class="auth-copy">
+        <span>WILLS INTELLIGENCE</span>
+        <h1>Masuk ke WILL</h1>
+        <p>Satu akses untuk membaca kondisi bisnis Wills sesuai role kamu.</p>
       </div>
-
-      <div class="login-card">
-        <div class="login-head">
-          <span class="secure-dot"></span>
-          <span>Secure access</span>
-        </div>
-        <h2>Masuk ke Command Center</h2>
-        <p>Akses otomatis mengikuti role dan outlet yang terdaftar.</p>
-
-        <form id="loginForm" autocomplete="on">
-          <label class="field-label" for="loginId">Login ID</label>
-          <div class="field-shell">
-            <span class="field-icon" data-icon="user"></span>
-            <input id="loginId" autocomplete="username" placeholder="owner" required />
-          </div>
-
-          <label class="field-label" for="pin">PIN</label>
-          <div class="field-shell">
-            <span class="field-icon" data-icon="lock"></span>
-            <input id="pin" type="password" inputmode="numeric" autocomplete="current-password" minlength="4" placeholder="Masukkan PIN" required />
-            <button id="togglePin" type="button" class="icon-btn inline-btn" aria-label="Tampilkan PIN" data-icon="eye"></button>
-          </div>
-
-          <button class="btn primary wide login-btn" type="submit">
-            <span>Masuk ke WILL</span><span data-icon="arrow-right"></span>
-          </button>
-        </form>
-
-        <div class="login-security">
-          <span data-icon="shield"></span>
-          <p><b>READ → ANALYZE → PROPOSE</b><br>WILL tidak mengeksekusi perubahan ledger, stok, atau kas tanpa otorisasi.</p>
-        </div>
-      </div>
-
-      <p class="version-line">Wills Intelligence • Production</p>
+      <form id="loginForm" class="auth-form">
+        <label>Login ID</label>
+        <div class="input-row"><span data-icon="user"></span><input id="loginId" autocomplete="username" placeholder="owner" required /></div>
+        <label>PIN</label>
+        <div class="input-row"><span data-icon="lock"></span><input id="pin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Masukkan PIN" minlength="4" required /><button id="togglePin" type="button" class="ghost-icon" data-icon="eye" aria-label="Tampilkan PIN"></button></div>
+        <button id="loginBtn" class="auth-submit" type="submit">Masuk</button>
+      </form>
+      <button id="apiHelpBtn" class="api-help hidden" type="button">Backend belum tersambung</button>
+      <p class="auth-foot">READ → ANALYZE → PROPOSE</p>
     </div>
   </section>
 
-  <div id="appShell" class="app-shell hidden">
-    <header class="topbar">
-      <div class="topbar-brand">
+  <div id="appShell" class="app hidden">
+    <div id="drawerScrim" class="drawer-scrim"></div>
+    <aside id="drawer" class="drawer" aria-label="Menu WILL">
+      <div class="drawer-head">
         <img src="assets/wills-brand.png" alt="Wills" />
-        <div>
-          <span>WILLS INTELLIGENCE</span>
-          <strong id="helloTitle">Selamat datang</strong>
-        </div>
+        <div><b>WILL</b><span>Wills Intelligence</span></div>
+        <button id="closeDrawer" class="icon-button" data-icon="x" aria-label="Tutup menu"></button>
       </div>
-      <div class="topbar-actions">
-        <span class="live-chip"><i></i> LIVE</span>
-        <button id="profileBtn" class="avatar" aria-label="Profil">OW</button>
+      <button id="newChatBtn" class="new-chat"><span data-icon="edit"></span><b>Obrolan baru</b></button>
+      <div class="drawer-section">
+        <small>INTELLIGENCE</small>
+        <button class="drawer-link active" data-view="chat"><span data-icon="message"></span>WILL</button>
+        <button class="drawer-link" data-view="summary"><span data-icon="pulse"></span>Ringkasan Bisnis</button>
+        <button class="drawer-link" data-view="outlets"><span data-icon="store"></span>Outlet</button>
+        <button class="drawer-link" data-view="alerts"><span data-icon="bell"></span>Alerts <i id="drawerAlertCount"></i></button>
+        <button class="drawer-link owner-only" data-view="operations"><span data-icon="clipboard"></span>Operasional</button>
+        <button class="drawer-link owner-only" data-view="warehouse"><span data-icon="warehouse"></span>Warehouse</button>
+        <button class="drawer-link owner-only" data-view="finance"><span data-icon="wallet"></span>Finance</button>
       </div>
+      <div class="drawer-section drawer-bottom">
+        <small>AKUN</small>
+        <button class="drawer-link" data-view="profile"><span data-icon="user"></span>Profile & Akses</button>
+        <button id="logoutBtn" class="drawer-link danger"><span data-icon="logout"></span>Keluar</button>
+      </div>
+      <div class="drawer-user"><div id="drawerAvatar" class="mini-avatar">OW</div><div><b id="drawerName">Owner</b><span id="drawerRole">OWNER</span></div><em><i></i> LIVE</em></div>
+    </aside>
+
+    <header class="chat-header">
+      <button id="menuBtn" class="icon-button" data-icon="menu" aria-label="Buka menu"></button>
+      <button id="headerBrand" class="header-brand" data-view="chat"><b>WILL</b><span id="viewSubtitle">Wills Intelligence</span></button>
+      <button id="headerAvatar" class="header-avatar">OW</button>
     </header>
 
-    <main id="mainContent" class="content">
-      <section id="homePage" class="page active"></section>
-      <section id="outletsPage" class="page"></section>
-      <section id="alertsPage" class="page"></section>
-      <section id="willPage" class="page"></section>
-      <section id="morePage" class="page"></section>
-      <section id="detailPage" class="page"></section>
-    </main>
+    <main id="main" class="main">
+      <section id="chatView" class="view chat-view active">
+        <div id="chatScroller" class="chat-scroller">
+          <div id="chatEmpty" class="chat-empty">
+            <div class="will-mark"><img src="assets/wills-brand.png" alt="Wills" /></div>
+            <span>WILLS INTELLIGENCE</span>
+            <h1 id="chatGreeting">Ada yang bisa WILL bantu?</h1>
+            <p>Tanyakan penjualan, outlet, stok, operasional, warehouse, finance, atau prioritas bisnis hari ini.</p>
+            <div class="suggestions">
+              <button data-prompt="Will, bagaimana kondisi Wills hari ini?">Kondisi Wills hari ini <span data-icon="arrow-up-right"></span></button>
+              <button data-prompt="Outlet mana yang paling perlu perhatian hari ini?">Outlet yang perlu perhatian <span data-icon="arrow-up-right"></span></button>
+              <button data-prompt="Bagaimana kondisi stok, permintaan bahan, dan surat jalan?">Stok & supply <span data-icon="arrow-up-right"></span></button>
+              <button class="owner-only" data-prompt="Bagaimana kondisi tugas outlet, terima bahan, produksi, SO, dan closing?">Operasional outlet <span data-icon="arrow-up-right"></span></button>
+            </div>
+          </div>
+          <div id="chatMessages" class="chat-messages"></div>
+        </div>
+        <form id="composer" class="composer">
+          <div class="composer-box">
+            <textarea id="askInput" rows="1" maxlength="1000" placeholder="Tanya WILL…"></textarea>
+            <button id="sendBtn" class="send-button" type="submit" data-icon="arrow-up" aria-label="Kirim"></button>
+          </div>
+          <small>WILL dapat membuat kesalahan. Keputusan penting tetap diverifikasi Owner.</small>
+        </form>
+      </section>
 
-    <nav class="bottom-nav" aria-label="Navigasi utama">
-      <button data-page="homePage" class="nav-item active" data-icon="home"><span class="nav-icon"></span><small>Home</small></button>
-      <button data-page="outletsPage" class="nav-item" data-icon="store"><span class="nav-icon"></span><small>Outlet</small></button>
-      <button data-page="alertsPage" class="nav-item" data-icon="bell"><span class="nav-icon"></span><small>Alerts</small></button>
-      <button data-page="willPage" class="nav-item will-nav" data-icon="spark"><span class="nav-icon"></span><small>WILL</small></button>
-      <button data-page="morePage" class="nav-item" data-icon="grid"><span class="nav-icon"></span><small>More</small></button>
-    </nav>
+      <section id="panelView" class="view panel-view">
+        <div id="panelContent"></div>
+      </section>
+    </main>
   </div>
 
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+  <script src="config.js?v=0.3.0"></script>
+  <script src="app.js?v=0.3.0"></script>
 </body>
 </html>
