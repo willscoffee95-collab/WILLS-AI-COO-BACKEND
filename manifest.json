@@ -1,0 +1,14 @@
+{
+  "name": "WILLS AI COO",
+  "short_name": "WILL",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fffaf5",
+  "theme_color": "#f97316",
+  "description": "Wills Intelligence — AI Business Control Tower",
+  "icons": [
+    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},
+    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"}
+  ]
+}
